@@ -1,0 +1,19 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "date": "2026-04-07",
+      "amount": 15000,
+      "category": "식비",
+      "memo": "점심 식사",
+      "type": "expense"
+    }
+  ],
+  "budgets": [
+    {
+      "id": 1,
+      "month": "2026-04",
+      "amount": 500000
+    }
+  ]
+}

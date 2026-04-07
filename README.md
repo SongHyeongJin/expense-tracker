@@ -85,8 +85,7 @@
   - Vue 3 기반 SPA 구조
   - json-server를 활용한 Mock API 서버 구성
   - 클라이언트-서버 분리 구조 (REST 기반 통신)
-- **API 명세서:**
-  - (작성 예정)
+- **[API 명세서](docs/api-spec.md)**
 
 ## 개발 환경
 
