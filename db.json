@@ -1,17 +1,182 @@
 {
+  "categories": [
+    {
+      "id": "income-salary",
+      "name": "월급",
+      "type": "income"
+    },
+    {
+      "id": "income-allowance",
+      "name": "용돈",
+      "type": "income"
+    },
+    {
+      "id": "income-interest",
+      "name": "이자",
+      "type": "income"
+    },
+    {
+      "id": "income-side",
+      "name": "부수입",
+      "type": "income"
+    },
+    {
+      "id": "income-etc",
+      "name": "기타수입",
+      "type": "income"
+    },
+    {
+      "id": "expense-food",
+      "name": "식비",
+      "type": "expense"
+    },
+    {
+      "id": "expense-transport",
+      "name": "교통비",
+      "type": "expense"
+    },
+    {
+      "id": "expense-shopping",
+      "name": "쇼핑",
+      "type": "expense"
+    },
+    {
+      "id": "expense-culture",
+      "name": "문화생활",
+      "type": "expense"
+    },
+    {
+      "id": "expense-utility",
+      "name": "공과금",
+      "type": "expense"
+    },
+    {
+      "id": "expense-medical",
+      "name": "의료",
+      "type": "expense"
+    },
+    {
+      "id": "expense-education",
+      "name": "교육",
+      "type": "expense"
+    },
+    {
+      "id": "expense-etc",
+      "name": "기타지출",
+      "type": "expense"
+    }
+  ],
   "transactions": [
     {
       "id": 1,
+      "date": "2026-04-01",
+      "amount": 2500000,
+      "category": "월급",
+      "memo": "4월 급여",
+      "type": "income"
+    },
+    {
+      "id": 2,
+      "date": "2026-04-02",
+      "amount": 12000,
+      "category": "식비",
+      "memo": "점심 식사",
+      "type": "expense"
+    },
+    {
+      "id": 3,
+      "date": "2026-04-03",
+      "amount": 45000,
+      "category": "교통",
+      "memo": "교통카드 충전",
+      "type": "expense"
+    },
+    {
+      "id": 4,
+      "date": "2026-04-04",
+      "amount": 80000,
+      "category": "쇼핑",
+      "memo": "옷 구매",
+      "type": "expense"
+    },
+    {
+      "id": 5,
+      "date": "2026-04-05",
+      "amount": 30000,
+      "category": "문화",
+      "memo": "영화 관람",
+      "type": "expense"
+    },
+    {
+      "id": 6,
+      "date": "2026-04-06",
+      "amount": 50000,
+      "category": "용돈",
+      "memo": "부모님 지원",
+      "type": "income"
+    },
+    {
+      "id": 7,
       "date": "2026-04-07",
       "amount": 15000,
       "category": "식비",
       "memo": "점심 식사",
       "type": "expense"
+    },
+    {
+      "id": 8,
+      "date": "2026-04-07",
+      "amount": 22000,
+      "category": "카페",
+      "memo": "",
+      "type": "expense"
+    },
+    {
+      "id": 9,
+      "date": "2026-04-08",
+      "amount": 100000,
+      "category": "프리랜서",
+      "memo": "디자인 외주",
+      "type": "income"
+    },
+    {
+      "id": 10,
+      "date": "2026-03-28",
+      "amount": 60000,
+      "category": "생활용품",
+      "memo": "세제, 휴지 구매",
+      "type": "expense"
+    },
+    {
+      "id": 11,
+      "date": "2026-03-15",
+      "amount": 70000,
+      "category": "통신비",
+      "memo": "휴대폰 요금",
+      "type": "expense"
+    },
+    {
+      "id": 12,
+      "date": "2026-02-10",
+      "amount": 2500000,
+      "category": "월급",
+      "memo": "2월 급여",
+      "type": "income"
     }
   ],
   "budgets": [
     {
       "id": 1,
+      "month": "2026-02",
+      "amount": 450000
+    },
+    {
+      "id": 2,
+      "month": "2026-03",
+      "amount": 500000
+    },
+    {
+      "id": 3,
       "month": "2026-04",
       "amount": 500000
     }
