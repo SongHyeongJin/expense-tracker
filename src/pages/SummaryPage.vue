@@ -46,7 +46,7 @@
     <section class="stats-section">
       <h3>📁 카테고리별 지출 현황</h3>
       <div v-if="filteredTransactions.length === 0" class="empty-state">
-        <p>해당 기간의 거래 내역이 없습니다. 새로운 내역을 등록해 보세요!</p>
+        <p>해당 기간의 거래 내역이 없습니다.</p>
       </div>
       <div v-else class="stats-content">
         <CategoryList
@@ -64,49 +64,42 @@ import { useLedgerStore } from '@/stores/ledgerStore';
 import SummaryCard from '@/components/summary/SummaryCard.vue';
 import CategoryList from '@/components/summary/CategoryList.vue';
 
-// 1. Store 연결
 const store = useLedgerStore();
 
-// 2. 초기 데이터 가져오기 (F-01)
 onMounted(() => {
   store.loadData();
 });
 
-// 3. 화면 표시용 기간 텍스트 (예: 2026년 4월)
 const displayPeriod = computed(() => {
   const y = store.currentDate.getFullYear();
   const m = store.currentDate.getMonth() + 1;
-
   if (store.viewType === 'year') return `${y}년 전체`;
   if (store.viewType === 'month') return `${y}년 ${m}월`;
   return `${y}년 ${m}월 현재 주차`;
 });
 
-// 4. [F-03] 내역 필터링 로직
 const filteredTransactions = computed(() => {
   const year = store.currentDate.getFullYear();
   const month = String(store.currentDate.getMonth() + 1).padStart(2, '0');
 
   return store.transactions.filter((t) => {
-    // 날짜 문자열(YYYY-MM-DD)에서 연, 월 추출
-    if (store.viewType === 'year') {
-      return t.date.startsWith(`${year}`);
-    }
-    if (store.viewType === 'month') {
+    if (store.viewType === 'year') return t.date.startsWith(`${year}`);
+    if (store.viewType === 'month')
       return t.date.startsWith(`${year}-${month}`);
-    }
     if (store.viewType === 'week') {
       const tDate = new Date(t.date);
-      const now = store.currentDate;
-      const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay())); // 일요일
-      const endOfWeek = new Date(now.setDate(now.getDate() + 6)); // 토요일
+      const tempDate = new Date(store.currentDate);
+      const startOfWeek = new Date(
+        tempDate.setDate(tempDate.getDate() - tempDate.getDay()),
+      );
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
       return tDate >= startOfWeek && tDate <= endOfWeek;
     }
     return true;
   });
 });
 
-// 5. [F-04] 합계 계산 로직
 const summary = computed(() => {
   return filteredTransactions.value.reduce(
     (acc, curr) => {
@@ -119,7 +112,6 @@ const summary = computed(() => {
   );
 });
 
-// 6. [F-05] 카테고리별 통계 로직
 const categoryStats = computed(() => {
   const stats = {};
   filteredTransactions.value
@@ -132,67 +124,48 @@ const categoryStats = computed(() => {
 </script>
 
 <style scoped>
+/* 기존 스타일에서 예산 관련 부분만 빼고 유지 */
 .summary-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
-
 .page-header {
   text-align: center;
   margin-bottom: 30px;
 }
-
 .period-controls {
   margin: 15px 0;
   display: flex;
   justify-content: center;
   gap: 10px;
 }
-
 .period-controls button {
   padding: 8px 16px;
   border: 1px solid #ddd;
   background: white;
   border-radius: 20px;
   cursor: pointer;
-  transition: all 0.3s;
 }
-
 .period-controls button.active {
   background: #4a90e2;
   color: white;
   border-color: #4a90e2;
 }
-
-.current-date-display {
-  color: #666;
-  font-size: 0.9rem;
-}
-
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   margin-bottom: 40px;
 }
-
 .stats-section {
   background: #f9f9f9;
   padding: 25px;
   border-radius: 15px;
 }
-
 .empty-state {
   text-align: center;
   padding: 50px 0;
   color: #999;
-}
-
-/* 반응형 모바일 대응 */
-@media (max-width: 768px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
 }
 </style>
