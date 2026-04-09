@@ -33,7 +33,7 @@ export const useTransactionStore = defineStore('transactionStore', () => {
   }
   // 외부에서 사용할 상태와 함수 반환
   return {
-    transactions, // 외부에서 사용할 상태와 함수 반환
+    transactions, // 원본 거래 목록
     sortedTransactions, // 정렬된 거래 목록
     createTransaction, // 거래 생성 함수
   };
