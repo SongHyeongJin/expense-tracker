@@ -1,4 +1,5 @@
 // 날짜나 숫자 등을 화면에 쓰기 좋은 형식으로 변경하는 함수 모음
+
 export const formatCurrency = (value) => {
   if (!value) return '0';
   return new Intl.NumberFormat('ko-KR').format(value);
