@@ -9,6 +9,11 @@ const router = createRouter({
       name: 'transaction-new',
       component: TransactionFormPage,
     },
+    {
+      path: 'transactions/:id/edit',
+      name: 'transaction-edit',
+      component: TransactionFormPage,
+    },
   ],
 });
 
