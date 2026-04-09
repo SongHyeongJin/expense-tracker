@@ -58,3 +58,28 @@ export async function updateBudget(id, budget) {
 
   return response.data;
 }
+
+export async function saveMonthlyBudget({ month, amount }) {
+  if (!month) {
+    throw new Error('month 값은 필수입니다.');
+  }
+
+  const numericAmount = Number(amount);
+
+  if (Number.isNaN(numericAmount) || numericAmount <= 0) {
+    throw new Error('예산 금액은 0보다 큰 숫자여야 합니다.');
+  }
+
+  const existingBudget = await getBudgetByMonth(month);
+
+  if (existingBudget) {
+    return updateBudget(existingBudget.id, {
+      amount: numericAmount,
+    });
+  }
+
+  return createBudget({
+    month,
+    amount: numericAmount,
+  });
+}
