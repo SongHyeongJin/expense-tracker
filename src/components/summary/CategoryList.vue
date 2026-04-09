@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { formatCurrency } from '@/utils/formatter';
+import { formatCurrency } from '@/utils/format';
 
 const props = defineProps({
   stats: Object, // { "식비": 50000, "교통비": 20000 } 형태
