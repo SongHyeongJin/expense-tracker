@@ -9,10 +9,3 @@ export const apiClient = axios.create({
   // 환경변수 없을 시 apiClient.get('/members')면 http://localhost:3000/members에 요청 보냄
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
 });
-
-export const transactionService = {
-  // 초기 데이터 조회를 위한 GET 호출
-  getTransactions() {
-    return apiClient.get('/transactions');
-  },
-};

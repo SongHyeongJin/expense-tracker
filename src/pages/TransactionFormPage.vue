@@ -3,6 +3,8 @@
 import { computed, onMounted, ref, reactive } from 'vue';
 // 라우터 (페이지 이동, URL 정보)
 import { useRoute, useRouter } from 'vue-router';
+// 서버와 통신하는 서비스 (API 요청)
+import { transactionService } from '@/services/transactionService';
 // Pinia store (상태 관리)
 import { useCategoryStore } from '@/stores/categoryStore';
 import { useTransactionStore } from '@/stores/transactionStore';
@@ -29,6 +31,9 @@ const saving = ref(false);
 // 사용자에게 보여줄 메시지 (에러 등)
 const message = ref('');
 
+// 수정 모드인지 여부 (URL에 id가 있으면 수정)
+const isEdit = computed(() => Boolean(route.params.id));
+
 // 폼 데이터 (reactive → 객체 전체 반응형)
 const form = reactive({
   date: toDateInputValue(),
@@ -47,6 +52,18 @@ const filteredCategories = computed(() =>
 onMounted(async () => {
   // 이미 데이터가 있으면 재요청 안함
   if (!categoryStore.categories.length) await categoryStore.fetchCategories();
+  if (isEdit.value) {
+    const cached = transactionStore.getTransactionById(route.params.id);
+    const transaction =
+      cached || (await transactionService.getTransaction(route.params.id));
+    form.date = transaction.date;
+    form.type = transaction.type;
+    form.category = transaction.category;
+    form.amount = String(transaction.amount);
+    form.memo = transaction.memo || '';
+  } else {
+    form.category = filteredCategories.value[0]?.name || '';
+  }
 });
 
 // 수입/지출 버튼 클릭 시 실행
@@ -99,10 +116,13 @@ async function submit() {
   };
 
   try {
-    // 서버에 거래 생성 요청
-    await transactionStore.createTransaction(payload);
+    if (isEdit.value)
+      // 수정 모드 → 기존 데이터 업데이트
+      await transactionStore.updateTransaction(route.params.id, payload);
+    // 신규 등록 → 데이터 생성, 서버에 거래 생성 요청
+    else await transactionStore.createTransaction(payload);
     // 성공 시 목록 페이지로 이동 -아직 미작성 페이지
-    //router.push('/transactions');
+    router.push('/transactions');
   } catch (error) {
     // 실패 시 메시지 표시
     message.value = '저장에 실패했습니다. json-server 실행 상태를 확인해주세요';
@@ -114,76 +134,82 @@ async function submit() {
 </script>
 <template>
   <section>
-    <div>
-      <h1>새 거래 등록</h1>
-    </div>
-    <form class="transaction-form" @submit.prevent="submit">
+    <section>
       <div>
-        <button
-          type="button"
-          :class="{ active: form.type === 'income' }"
-          @click="selectType('income')"
-        >
-          수입
-        </button>
-        <button
-          type="button"
-          :class="{ active: form.type === 'expense' }"
-          @click="selectType('expense')"
-        >
-          지출
-        </button>
+        <h1>{{ isEdit ? '거래 수정' : '새 거래 등록' }}</h1>
       </div>
-      <label>
-        날짜
-        <input type="date" v-model="form.date" required />
-      </label>
-      <label>
-        카테고리
-        <select v-model="form.category" required>
-          <option value="" disabled>카테고리 선택</option>
-          <option
-            v-for="category in filteredCategories"
-            :key="category.id"
-            :value="category.name"
+      <form class="transaction-form" @submit.prevent="submit">
+        <div>
+          <button
+            type="button"
+            :class="{ active: form.type === 'income' }"
+            @click="selectType('income')"
           >
-            {{ category.name }}
-          </option>
-        </select>
-      </label>
-      <label>
-        금액
-        <input
-          type="text"
-          v-model="form.amount"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          placeholder="금액을 입력해 주세요"
-          required
-        />
-      </label>
-      <label>
-        메모
-        <textarea
-          v-model="form.memo"
-          rows="4"
-          placeholder="메모를 입력하세요"
-        ></textarea>
-      </label>
+            수입
+          </button>
+          <button
+            type="button"
+            :class="{ active: form.type === 'expense' }"
+            @click="selectType('expense')"
+          >
+            지출
+          </button>
+        </div>
+        <label>
+          날짜
+          <input type="date" v-model="form.date" required />
+        </label>
+        <label>
+          카테고리
+          <select v-model="form.category" required>
+            <option value="" disabled>카테고리 선택</option>
+            <option
+              v-for="category in filteredCategories"
+              :key="category.id"
+              :value="category.name"
+            >
+              {{ category.name }}
+            </option>
+          </select>
+        </label>
+        <label>
+          금액
+          <input
+            type="text"
+            v-model="form.amount"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            placeholder="금액을 입력해 주세요"
+            required
+          />
+        </label>
+        <label>
+          메모
+          <textarea
+            v-model="form.memo"
+            rows="4"
+            placeholder="메모를 입력하세요"
+          ></textarea>
+        </label>
 
-      <p v-if="message" class="alert">{{ message }}</p>
-      <div class="form-actions">
-        <button
-          class="button button--ghost"
-          type="button"
-          @click="router.back()"
-        >
-          취소
-        </button>
-        <button class="button button--primary" type="submit" :disabled="saving">
-          {{ saving ? '저장 중' : '저장' }}
-        </button>
-      </div>
-    </form>
+        <p v-if="message" class="alert">{{ message }}</p>
+        <div class="form-actions">
+          <button
+            class="button button--ghost"
+            type="button"
+            @click="router.back()"
+          >
+            취소
+          </button>
+          <button
+            class="button button--primary"
+            type="submit"
+            :disabled="saving"
+          >
+            {{ saving ? '저장 중' : '저장' }}
+          </button>
+        </div>
+      </form>
+    </section>
   </section>
 </template>
