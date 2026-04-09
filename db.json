@@ -68,19 +68,36 @@
   ],
   "transactions": [
     {
-      "id": 1,
+      "id": "1",
       "date": "2026-04-07",
       "amount": 15000,
       "category": "식비",
       "memo": "점심 식사",
       "type": "expense"
+    },
+    {
+      "date": "2026-04-09",
+      "type": "income",
+      "category": "용돈",
+      "amount": 100000,
+      "memo": "",
+      "id": "Fi36dgFlENY"
+    },
+    {
+      "date": "2026-04-09",
+      "type": "expense",
+      "category": "식비",
+      "amount": 1000,
+      "memo": "",
+      "id": "6rQa8GhZ7TU"
     }
   ],
   "budgets": [
     {
-      "id": 1,
+      "id": "1",
       "month": "2026-04",
       "amount": 500000
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
