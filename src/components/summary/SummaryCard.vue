@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { formatCurrency } from '@/utils/formatter';
+import { formatCurrency } from '@/utils/format';
 
 defineProps({
   label: String,
