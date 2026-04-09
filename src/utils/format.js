@@ -1,5 +1,20 @@
 // 날짜나 숫자 등을 화면에 쓰기 좋은 형식으로 변경하는 함수 모음
 
+export const formatCurrency = (value) => {
+  if (!value) return '0';
+  return new Intl.NumberFormat('ko-KR').format(value);
+};
+
+export const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(date);
+};
+
 // date 매개변수가 없으면 기본값으로 현재 날짜 사용
 export function toDateInputValue(date = new Date()) {
   // 현재 사용자의 로컬 시간을 계산하기 위해 타임존 오프셋(분)를 가져옴  타임존 오프셋-현재 지역과 UTC의 차이(분 단위)
