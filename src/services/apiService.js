@@ -13,6 +13,6 @@ export const apiClient = axios.create({
 export const transactionService = {
   // 초기 데이터 조회를 위한 GET 호출
   getTransactions() {
-    return api.get('/transactions');
+    return apiClient.get('/transactions');
   },
 };
