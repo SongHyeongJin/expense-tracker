@@ -172,14 +172,18 @@ async function submit() {
       </label>
 
       <p v-if="message" class="alert">{{ message }}</p>
+      <div class="form-actions">
+        <button
+          class="button button--ghost"
+          type="button"
+          @click="router.back()"
+        >
+          취소
+        </button>
+        <button class="button button--primary" type="submit" :disabled="saving">
+          {{ saving ? '저장 중' : '저장' }}
+        </button>
+      </div>
     </form>
-    <div class="form-actions">
-      <button class="button button--ghost" type="button" @click="router.back()">
-        취소
-      </button>
-      <button class="button button--primary" type="submit" :disabled="saving">
-        {{ saving ? '저장 중' : '저장' }}
-      </button>
-    </div>
   </section>
 </template>
