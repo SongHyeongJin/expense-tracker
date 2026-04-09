@@ -32,3 +32,29 @@ export async function createBudget(budget) {
 
   return response.data;
 }
+
+export async function updateBudget(id, budget) {
+  if (!id) {
+    throw new Error('수정할 예산 ID가 필요합니다.');
+  }
+
+  const requestBody = {};
+
+  if (budget.month !== undefined) {
+    requestBody.month = budget.month;
+  }
+
+  if (budget.amount !== undefined) {
+    const numericAmount = Number(budget.amount);
+
+    if (Number.isNaN(numericAmount) || numericAmount <= 0) {
+      throw new Error('예산 금액은 0보다 큰 숫자여야 합니다.');
+    }
+
+    requestBody.amount = numericAmount;
+  }
+
+  const response = await axios.patch(`${BASE_URL}/${id}`, requestBody);
+
+  return response.data;
+}
