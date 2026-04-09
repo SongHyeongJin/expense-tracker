@@ -1,5 +1,9 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia'; // 1. Pinia 불러오기
+import App from './App.vue';
 
-createApp(App).mount('#app')
+const app = createApp(App);
+const pinia = createPinia(); // 2. Pinia 인스턴스 생성
+
+app.use(pinia); // 3. 앱에 Pinia 등록
+app.mount('#app');
