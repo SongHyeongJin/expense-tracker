@@ -2,11 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import TransactionFormPage from '@/pages/TransactionFormPage.vue';
 import TransactionsPage from '@/pages/TransactionsPage.vue';
 import SummaryPage from '@/pages/SummaryPage.vue';
-import HomePage from '@/pages/HomePage.vue';
+import BudgetPage from '@/pages/BudgetPage.vue';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'home', component: HomePage },
     {
       path: '/transactions',
       name: 'transactions',
@@ -16,6 +16,11 @@ const router = createRouter({
       path: '/summary',
       name: 'summary',
       component: SummaryPage,
+    },
+    {
+      path: '/budget',
+      name: 'budget',
+      component: BudgetPage,
     },
     {
       path: '/transactions/new',
