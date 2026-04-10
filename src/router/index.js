@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import TransactionFormPage from '@/pages/TransactionFormPage.vue';
 import TransactionsPage from '@/pages/TransactionsPage.vue';
 import SummaryPage from '@/pages/SummaryPage.vue';
-import BudgetPage from '@/views/BudgetPage.vue';
+import BudgetPage from '@/pages/BudgetPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
