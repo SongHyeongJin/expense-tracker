@@ -18,6 +18,7 @@
         :month="selectedMonth"
         :amount="budgetAmount"
         @saved="fetchBudgetSummary"
+        @month-change="handleMonthChange"
       />
 
       <div class="budget-page__meta">
@@ -36,7 +37,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import BudgetForm from '@/components/budget/BudgetForm.vue';
 import BudgetSummary from '@/components/budget/BudgetSummary.vue';
 import { getBudgetByMonth } from '@/services/budgetService';
@@ -60,6 +61,10 @@ onMounted(async () => {
   await fetchBudgetSummary();
 });
 
+watch(selectedMonth, async () => {
+  await fetchBudgetSummary();
+});
+
 async function fetchBudgetSummary() {
   isLoading.value = true;
   errorMessage.value = '';
@@ -78,6 +83,10 @@ async function fetchBudgetSummary() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function handleMonthChange(month) {
+  selectedMonth.value = month;
 }
 
 function getCurrentMonth() {
