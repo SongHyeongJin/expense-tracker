@@ -23,13 +23,17 @@
 
       <div class="budget-page__meta">
         <p>조회 월: {{ selectedMonth }}</p>
-        <p>설정 예산: {{ formatCurrency(budgetAmount) }}</p>
+        <p>
+          설정 예산:
+          {{ isBudgetSet ? formatCurrency(budgetAmount) : '미설정' }}
+        </p>
       </div>
 
       <BudgetSummary
         :expense-total="summary.expenseTotal"
         :remaining-budget="summary.remainingBudget"
         :usage-rate="summary.usageRate"
+        :is-budget-set="isBudgetSet"
         :status="summary.status"
       />
     </div>
@@ -46,6 +50,7 @@ import { createBudgetSummary } from '@/utils/budget';
 
 const selectedMonth = ref(getCurrentMonth());
 const budgetAmount = ref(0);
+const isBudgetSet = ref(false);
 const transactions = ref([]);
 const isLoading = ref(false);
 const errorMessage = ref('');
@@ -75,6 +80,7 @@ async function fetchBudgetSummary() {
       transactionService.getTransactionsByMonth(selectedMonth.value),
     ]);
 
+    isBudgetSet.value = budget !== null;
     budgetAmount.value = budget?.amount ?? 0;
     transactions.value = monthlyTransactions;
   } catch (error) {
