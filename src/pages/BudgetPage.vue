@@ -14,6 +14,12 @@
     </div>
 
     <div v-else>
+      <BudgetForm
+        :month="selectedMonth"
+        :amount="budgetAmount"
+        @saved="fetchBudgetSummary"
+      />
+
       <div class="budget-page__meta">
         <p>조회 월: {{ selectedMonth }}</p>
         <p>설정 예산: {{ formatCurrency(budgetAmount) }}</p>
@@ -31,6 +37,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import BudgetForm from '@/components/budget/BudgetForm.vue';
 import BudgetSummary from '@/components/budget/BudgetSummary.vue';
 import { getBudgetByMonth } from '@/services/budgetService';
 import { transactionService } from '@/services/transactionService';
