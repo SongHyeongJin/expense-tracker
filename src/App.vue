@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
@@ -12,12 +12,3 @@ import { RouterLink, RouterView } from 'vue-router';
   </nav>
   <RouterView />
 </template>
-
-<style scoped>
-.top-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 16px 24px;
-}
-</style>
