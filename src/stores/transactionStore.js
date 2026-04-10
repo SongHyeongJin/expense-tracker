@@ -24,6 +24,19 @@ export const useTransactionStore = defineStore('transactionStore', () => {
     }),
   );
 
+  async function fetchTransactions() {
+    loading.value = true;
+    error.value = '';
+    try {
+      transactions.value = await transactionService.getTransactions();
+    } catch (err) {
+      error.value = 'json-server에서 거래 데이터를 불러오지 못했습니다.';
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   // 새로운 거래를 생성하는 함수
   async function createTransaction(payload) {
     // 서버에 거래 생성 요청
@@ -65,6 +78,7 @@ export const useTransactionStore = defineStore('transactionStore', () => {
     sortedTransactions, // 정렬된 거래 목록
     loading, // 로딩 상태
     error, // 에러 상태
+    fetchTransactions,
     createTransaction, // 거래 생성 함수
     updateTransaction, // 거래 수정 함수
     deleteTransaction, // 거래 삭제 함수
