@@ -35,4 +35,21 @@ export const transactionService = {
   async deleteTransaction(id) {
     await apiClient.delete(`/transactions/${id}`);
   },
+
+  async getTransactionsByMonth(month) {
+    if (!month) {
+      throw new Error('month 값은 필수입니다.');
+    }
+
+    const { data } = await apiClient.get('/transactions', {
+      params: { _sort: '-date, -id' },
+    });
+
+    return data.filter((transaction) => {
+      return (
+        typeof transaction.date === 'string' &&
+        transaction.date.startsWith(month)
+      );
+    });
+  },
 };
