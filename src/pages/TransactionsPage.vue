@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue';
-import { useTransactionStore } from '@/stores/transactions';
+import { useTransactionStore } from '@/stores/transactionStore';
 import { calculateSummary } from '@/utils/summary';
 
 import LayoutShell from '@/components/LayoutShell.vue';
