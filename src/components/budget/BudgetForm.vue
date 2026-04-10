@@ -9,7 +9,7 @@
         class="budget-form__input"
         type="month"
         :value="month"
-        disabled
+        @change="handleMonthChange"
       />
     </div>
 
@@ -66,7 +66,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['saved']);
+const emit = defineEmits(['saved', 'month-change']);
 
 const localAmount = ref('');
 const isSubmitting = ref(false);
@@ -80,6 +80,10 @@ watch(
   },
   { immediate: true },
 );
+
+function handleMonthChange(event) {
+  emit('month-change', event.target.value);
+}
 
 async function handleSubmit() {
   errorMessage.value = '';
