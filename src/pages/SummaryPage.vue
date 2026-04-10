@@ -1,7 +1,7 @@
 <template>
   <div class="summary-container">
     <header class="page-header">
-      <h2>📊 기간별 재정 요약</h2>
+      <h2>기간별 재정 요약</h2>
       <div class="period-controls">
         <button
           :class="{ active: store.viewType === 'year' }"
