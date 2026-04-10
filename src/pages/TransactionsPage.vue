@@ -5,23 +5,54 @@
       :expense="summary.totalExpense"
     />
 
-    <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-      <FilterSection @filter-change="handleFilterChange" />
+    <div class="bg-white p-3 rounded shadow-sm mb-4 border">
+      <div class="row g-2 mb-3">
+        <div class="col-md-6 d-flex gap-2">
+          <input
+            type="date"
+            v-model="filters.startDate"
+            class="form-control form-control-sm"
+          />
+          <input
+            type="date"
+            v-model="filters.endDate"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div class="col-6 col-md-3">
+          <select v-model="filters.type" class="form-select form-select-sm">
+            <option value="">모든 타입</option>
+            <option value="INCOME">수입</option>
+            <option value="EXPENSE">지출</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <select v-model="filters.category" class="form-select form-select-sm">
+            <option value="">모든 카테고리</option>
+            <option v-for="cat in categories" :key="cat" :value="cat">
+              {{ cat }}
+            </option>
+          </select>
+        </div>
+      </div>
 
-      <select
-        v-model="sortBy"
-        class="form-select form-select-sm w-auto border-0 bg-transparent fw-bold text-secondary"
-      >
-        <option value="date_desc">최신순</option>
-        <option value="date_asc">오래된순</option>
-        <option value="amount_desc">금액 높은순</option>
-        <option value="amount_asc">금액 낮은순</option>
-      </select>
+      <div class="d-flex justify-content-between align-items-center">
+        <button @click="resetFilters" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-counterclockwise"></i> 필터 초기화
+        </button>
+        <select
+          v-model="sortBy"
+          class="form-select form-select-sm w-auto border-0 fw-bold text-primary"
+        >
+          <option value="date_desc">최신순</option>
+          <option value="date_asc">오래된순</option>
+          <option value="amount_desc">금액순</option>
+        </select>
+      </div>
     </div>
 
     <div v-if="store.loading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2 text-muted">데이터를 가져오는 중...</p>
+      <div class="spinner-border text-primary"></div>
     </div>
 
     <div v-else class="transaction-list">
@@ -30,12 +61,11 @@
         :key="item.id"
         :transaction="item"
       />
-
       <div
         v-if="filteredTransactions.length === 0"
-        class="text-center py-5 bg-white rounded shadow-sm border"
+        class="text-center py-5 text-muted"
       >
-        <p class="text-muted mb-0">조회된 거래 내역이 없습니다.</p>
+        검색 결과가 없습니다.
       </div>
     </div>
   </LayoutShell>
@@ -43,77 +73,70 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue';
-import { useTransactionStore } from '@/stores/transactions';
+import { useTransactionStore } from '@/stores/transactionStore';
 import { calculateSummary } from '@/utils/summary';
 
 import LayoutShell from '@/components/LayoutShell.vue';
 import SummaryCard from '@/components/SummaryCard.vue';
-import FilterSection from '@/components/FilterSection.vue';
 import TransactionListItem from '@/components/TransactionListItem.vue';
 
 const store = useTransactionStore();
-
 const sortBy = ref('date_desc');
+
+// 1. 필터 상태 통합 관리
 const filters = reactive({
   startDate: '',
   endDate: '',
   type: '',
+  category: '',
 });
 
-onMounted(async () => {
-  await store.fetchTransactions();
+onMounted(() => {
+  store.fetchTransactions();
 });
 
-const handleFilterChange = (newFilters) => {
-  Object.assign(filters, newFilters);
+// 2. 동적 카테고리 추출
+const categories = computed(() => {
+  const cats = store.transactions.map((t) => t.category);
+  return [...new Set(cats)].filter(Boolean).sort();
+});
+
+// 3. 필터 초기화 로직
+const resetFilters = () => {
+  filters.startDate = '';
+  filters.endDate = '';
+  filters.type = '';
+  filters.category = '';
 };
 
+// 4. 누적 필터링 및 정렬
 const filteredTransactions = computed(() => {
-  let result = [...store.transactions];
-
-  if (filters.type) {
-    result = result.filter(
-      (item) => item.type.toUpperCase() === filters.type.toUpperCase(),
-    );
-  }
-
-  if (filters.startDate && filters.endDate) {
-    result = result.filter((item) => {
-      return item.date >= filters.startDate && item.date <= filters.endDate;
-    });
-  }
-
-  result.sort((a, b) => {
-    const amtA = Number(String(a.amount).replace(/[^0-9.-]+/g, ''));
-    const amtB = Number(String(b.amount).replace(/[^0-9.-]+/g, ''));
-
-    switch (sortBy.value) {
-      case 'date_desc':
+  return store.transactions
+    .filter((item) => {
+      const matchType =
+        !filters.type || item.type.toUpperCase() === filters.type.toUpperCase();
+      const matchCategory =
+        !filters.category || item.category === filters.category;
+      let matchDate = true;
+      if (filters.startDate && filters.endDate) {
+        matchDate =
+          item.date >= filters.startDate && item.date <= filters.endDate;
+      }
+      return matchType && matchCategory && matchDate;
+    })
+    .sort((a, b) => {
+      if (sortBy.value === 'date_desc')
         return new Date(b.date) - new Date(a.date);
-      case 'date_asc':
+      if (sortBy.value === 'date_asc')
         return new Date(a.date) - new Date(b.date);
-      case 'amount_desc':
-        return amtB - amtA;
-      case 'amount_asc':
-        return amtA - amtB;
-      default:
-        return 0;
-    }
-  });
-
-  return result;
+      if (sortBy.value === 'amount_desc')
+        return Number(b.amount) - Number(a.amount);
+      return 0;
+    });
 });
 
+// 5. 요약 정보 계산
 const summary = computed(() => {
   return calculateSummary(filteredTransactions.value);
 });
 </script>
-
-<style scoped>
-.transaction-list {
-  padding-bottom: 100px;
-}
-.form-select:focus {
-  box-shadow: none;
-}
-</style>
