@@ -1,5 +1,12 @@
-<script setup></script>
+<script setup>
+import { RouterLink, RouterView } from 'vue-router';
+</script>
 
 <template>
-  <router-view />
+  <nav>
+    <RouterLink to="/transactions">거래 내역</RouterLink>
+    <RouterLink to="/transactions/new">거래 등록</RouterLink>
+    <RouterLink to="/summary">통계</RouterLink>
+  </nav>
+  <RouterView />
 </template>
