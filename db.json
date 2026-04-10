@@ -68,55 +68,7 @@
   ],
   "transactions": [
     {
-      "id": 1,
-      "date": "2026-04-01",
-      "amount": 2500000,
-      "category": "월급",
-      "memo": "4월 급여",
-      "type": "income"
-    },
-    {
-      "id": 2,
-      "date": "2026-04-02",
-      "amount": 12000,
-      "category": "식비",
-      "memo": "점심 식사",
-      "type": "expense"
-    },
-    {
-      "id": 3,
-      "date": "2026-04-03",
-      "amount": 45000,
-      "category": "교통",
-      "memo": "교통카드 충전",
-      "type": "expense"
-    },
-    {
-      "id": 4,
-      "date": "2026-04-04",
-      "amount": 80000,
-      "category": "쇼핑",
-      "memo": "옷 구매",
-      "type": "expense"
-    },
-    {
-      "id": 5,
-      "date": "2026-04-05",
-      "amount": 30000,
-      "category": "문화",
-      "memo": "영화 관람",
-      "type": "expense"
-    },
-    {
-      "id": 6,
-      "date": "2026-04-06",
-      "amount": 50000,
-      "category": "용돈",
-      "memo": "부모님 지원",
-      "type": "income"
-    },
-    {
-      "id": 7,
+      "id": "1",
       "date": "2026-04-07",
       "amount": 15000,
       "category": "식비",
@@ -124,44 +76,156 @@
       "type": "expense"
     },
     {
-      "id": 8,
-      "date": "2026-04-07",
-      "amount": 22000,
-      "category": "카페",
-      "memo": "",
-      "type": "expense"
-    },
-    {
-      "id": 9,
-      "date": "2026-04-08",
+      "id": "2",
+      "date": "2026-04-09",
+      "type": "income",
+      "category": "용돈",
       "amount": 100000,
-      "category": "프리랜서",
-      "memo": "디자인 외주",
-      "type": "income"
+      "memo": ""
     },
     {
-      "id": 10,
-      "date": "2026-03-28",
-      "amount": 60000,
-      "category": "생활용품",
-      "memo": "세제, 휴지 구매",
-      "type": "expense"
+      "id": "3",
+      "date": "2026-04-09",
+      "type": "expense",
+      "category": "식비",
+      "amount": 1000,
+      "memo": ""
     },
     {
-      "id": 11,
-      "date": "2026-03-15",
-      "amount": 70000,
-      "category": "통신비",
-      "memo": "휴대폰 요금",
-      "type": "expense"
-    },
-    {
-      "id": 12,
-      "date": "2026-02-10",
+      "id": "4",
+      "date": "2026-04-10",
       "amount": 2500000,
       "category": "월급",
-      "memo": "2월 급여",
+      "memo": "4월 급여",
       "type": "income"
+    },
+    {
+      "id": "5",
+      "date": "2026-04-10",
+      "amount": 8200,
+      "category": "식비",
+      "memo": "커피 + 샌드위치",
+      "type": "expense"
+    },
+    {
+      "id": "6",
+      "date": "2026-04-11",
+      "amount": 1250,
+      "category": "교통비",
+      "memo": "버스",
+      "type": "expense"
+    },
+    {
+      "id": "7",
+      "date": "2026-04-11",
+      "amount": 56000,
+      "category": "쇼핑",
+      "memo": "옷 구매",
+      "type": "expense"
+    },
+    {
+      "id": "8",
+      "date": "2026-04-12",
+      "amount": 15000,
+      "category": "문화생활",
+      "memo": "영화",
+      "type": "expense"
+    },
+    {
+      "id": "9",
+      "date": "2026-04-13",
+      "amount": 78000,
+      "category": "공과금",
+      "memo": "전기세",
+      "type": "expense"
+    },
+    {
+      "id": "10",
+      "date": "2026-04-14",
+      "amount": 30000,
+      "category": "의료",
+      "memo": "약국",
+      "type": "expense"
+    },
+    {
+      "id": "11",
+      "date": "2026-04-15",
+      "amount": 20000,
+      "category": "교육",
+      "memo": "온라인 강의",
+      "type": "expense"
+    },
+    {
+      "id": "12",
+      "date": "2026-04-16",
+      "amount": 50000,
+      "category": "부수입",
+      "memo": "프리랜서 작업",
+      "type": "income"
+    },
+    {
+      "id": "13",
+      "date": "2026-04-17",
+      "amount": 4300,
+      "category": "식비",
+      "memo": "편의점",
+      "type": "expense"
+    },
+    {
+      "id": "14",
+      "date": "2026-04-18",
+      "amount": 22000,
+      "category": "교통비",
+      "memo": "택시",
+      "type": "expense"
+    },
+    {
+      "id": "15",
+      "date": "2026-04-19",
+      "amount": 67000,
+      "category": "쇼핑",
+      "memo": "생활용품",
+      "type": "expense"
+    },
+    {
+      "id": "16",
+      "date": "2026-04-20",
+      "amount": 10000,
+      "category": "기타지출",
+      "memo": "기부",
+      "type": "expense"
+    },
+    {
+      "id": "17",
+      "date": "2026-04-21",
+      "amount": 12000,
+      "category": "식비",
+      "memo": "점심",
+      "type": "expense"
+    },
+    {
+      "id": "18",
+      "date": "2026-04-22",
+      "amount": 3000,
+      "category": "이자",
+      "memo": "예금 이자",
+      "type": "income"
+    },
+    {
+      "date": "2026-04-09",
+      "type": "income",
+      "category": "용돈",
+      "amount": 100000,
+      "memo": "",
+      "id": "Fi36dgFlENY"
+    },
+    {
+      "date": "2026-04-09",
+      "type": "expense",
+      "category": "식비",
+      "amount": 1000,
+      "memo": "",
+      "id": "6rQa8GhZ7TU"
     }
   ],
   "budgets": [
@@ -180,5 +244,6 @@
       "month": "2026-04",
       "amount": 500000
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
