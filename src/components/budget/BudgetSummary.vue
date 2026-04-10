@@ -89,7 +89,9 @@ const progressStatusClass = computed(() => {
 
 const statusText = computed(() => {
   if (!props.isBudgetSet) {
-    return '이번 달 예산이 아직 설정되지 않았어요.';
+    return props.expenseTotal > 0
+      ? '이번 달 지출은 있지만 예산이 아직 설정되지 않았어요.'
+      : '이번 달 예산이 아직 설정되지 않았어요.';
   }
 
   switch (props.status) {
