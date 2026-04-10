@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="transaction-item">
     <div class="transaction-date">
       <strong>{{ formatShortDate(transaction.date) }}</strong>
