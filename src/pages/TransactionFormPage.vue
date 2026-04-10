@@ -220,7 +220,7 @@ async function submit() {
 }
 
 .page--narrow {
-  max-width: 860px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -290,20 +290,25 @@ async function submit() {
 }
 
 .segmented button {
-  border: 0;
-  background: transparent;
-  padding: 12px;
-  border-radius: 10px;
-  font: inherit;
-  font-weight: 700;
-  color: #64748b;
+  height: 44px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
   cursor: pointer;
+  font: inherit;
+  font-weight: 900;
 }
 
-.segmented button.active {
-  background: #fff;
-  color: #0f172a;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+.segmented button.active:first-child {
+  border-color: #059669;
+  background: #dcfce7;
+  color: #047857;
+}
+
+.segmented button.active:last-child {
+  border-color: #dc2626;
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .alert {
@@ -414,7 +419,7 @@ async function submit() {
   }
 
   .page--narrow {
-    max-width: 760px;
+    max-width: 640px;
   }
 
   .card {
@@ -459,7 +464,7 @@ async function submit() {
   }
 
   .page--narrow {
-    max-width: 860px;
+    max-width: 720px;
   }
 
   .card {
