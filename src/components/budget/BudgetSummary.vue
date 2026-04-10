@@ -12,26 +12,39 @@
 
       <article class="budget-summary__card">
         <p class="budget-summary__label">남은 예산</p>
-        <p class="budget-summary__value">
-          {{ formatCurrency(remainingBudget) }}
+        <p
+          class="budget-summary__value"
+          :class="{ 'budget-summary__value--muted': !isBudgetSet }"
+        >
+          {{ isBudgetSet ? formatCurrency(remainingBudget) : '미설정' }}
         </p>
       </article>
 
       <article class="budget-summary__card">
         <p class="budget-summary__label">소진율</p>
-        <p class="budget-summary__value">{{ usageRate }}%</p>
+        <p
+          class="budget-summary__value"
+          :class="{ 'budget-summary__value--muted': !isBudgetSet }"
+        >
+          {{ isBudgetSet ? `${usageRate}%` : '-' }}
+        </p>
       </article>
     </div>
 
     <div class="budget-summary__progress-wrapper">
-      <div class="budget-summary__progress-bar">
+      <div v-if="isBudgetSet" class="budget-summary__progress-bar">
         <div
           class="budget-summary__progress-fill"
           :class="progressStatusClass"
           :style="{ width: progressWidth }"
         />
       </div>
-      <p class="budget-summary__status" :class="progressStatusClass">
+      <p
+        class="budget-summary__status"
+        :class="
+          isBudgetSet ? progressStatusClass : 'budget-summary__status--empty'
+        "
+      >
         {{ statusText }}
       </p>
     </div>
@@ -54,6 +67,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  isBudgetSet: {
+    type: Boolean,
+    default: true,
+  },
   status: {
     type: String,
     default: 'safe',
@@ -71,6 +88,10 @@ const progressStatusClass = computed(() => {
 });
 
 const statusText = computed(() => {
+  if (!props.isBudgetSet) {
+    return '이번 달 예산이 아직 설정되지 않았어요.';
+  }
+
   switch (props.status) {
     case 'caution':
       return '예산의 80% 이상을 사용했어요.';
@@ -134,6 +155,10 @@ function formatCurrency(amount) {
   color: #111827;
 }
 
+.budget-summary__value--muted {
+  color: #6b7280;
+}
+
 .budget-summary__progress-wrapper {
   display: flex;
   flex-direction: column;
@@ -158,6 +183,10 @@ function formatCurrency(amount) {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
+}
+
+.budget-summary__status--empty {
+  color: #6b7280;
 }
 
 .is-safe {
