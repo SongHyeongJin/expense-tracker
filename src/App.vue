@@ -8,6 +8,7 @@ import { RouterLink, RouterView } from 'vue-router';
     <RouterLink to="/transactions">거래 내역</RouterLink>
     <RouterLink to="/transactions/new">거래 등록</RouterLink>
     <RouterLink to="/summary">통계</RouterLink>
+    <RouterLink to="/budget">예산</RouterLink>
   </nav>
   <RouterView />
 </template>
