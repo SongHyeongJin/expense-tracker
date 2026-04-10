@@ -133,13 +133,13 @@ async function submit() {
 }
 </script>
 <template>
-  <section>
-    <section>
-      <div>
+  <section class="page page--narrow">
+    <section class="card">
+      <div class="card__header">
         <h1>{{ isEdit ? '거래 수정' : '새 거래 등록' }}</h1>
       </div>
       <form class="transaction-form" @submit.prevent="submit">
-        <div>
+        <div class="segmented">
           <button
             type="button"
             :class="{ active: form.type === 'income' }"
@@ -213,3 +213,257 @@ async function submit() {
     </section>
   </section>
 </template>
+
+<style scoped>
+.page {
+  padding: 24px 16px 96px;
+}
+
+.page--narrow {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.card__header {
+  margin-bottom: 20px;
+}
+
+.card__header h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.card__header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.transaction-form {
+  display: grid;
+  gap: 16px;
+}
+
+.transaction-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.transaction-form input,
+.transaction-form select,
+.transaction-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #fff;
+}
+
+.transaction-form input:focus,
+.transaction-form select:focus,
+.transaction-form textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  background: #f8fafc;
+  padding: 6px;
+  border-radius: 14px;
+}
+
+.segmented button {
+  border: 0;
+  background: transparent;
+  padding: 12px;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.segmented button.active {
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+.alert {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button--ghost {
+  background: #eef2f7;
+  color: #334155;
+}
+
+.button--primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .page {
+    padding: 16px 12px 88px;
+  }
+
+  .page--narrow {
+    max-width: 100%;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .card__header {
+    margin-bottom: 16px;
+  }
+
+  .card__header h1 {
+    font-size: 1.25rem;
+  }
+
+  .transaction-form {
+    gap: 14px;
+  }
+
+  .transaction-form label {
+    gap: 6px;
+    font-size: 0.95rem;
+  }
+
+  .transaction-form input,
+  .transaction-form select,
+  .transaction-form textarea {
+    padding: 11px 12px;
+    font-size: 0.95rem;
+  }
+
+  .segmented {
+    gap: 6px;
+    padding: 4px;
+  }
+
+  .segmented button {
+    min-height: 46px;
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+
+  .form-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .form-actions .button {
+    width: 100%;
+  }
+}
+
+/* Tablet (768px ~ 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .page {
+    padding: 28px 20px 88px;
+  }
+
+  .page--narrow {
+    max-width: 760px;
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: 18px;
+  }
+
+  .card__header {
+    margin-bottom: 18px;
+  }
+
+  .card__header h1 {
+    font-size: 1.35rem;
+  }
+
+  .transaction-form {
+    gap: 16px;
+  }
+
+  .transaction-form input,
+  .transaction-form select,
+  .transaction-form textarea {
+    padding: 12px;
+  }
+
+  .segmented {
+    gap: 8px;
+    padding: 5px;
+  }
+
+  .segmented button {
+    min-height: 48px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Desktop (> 1024px) */
+@media (min-width: 1025px) {
+  .page {
+    padding: 40px 24px 96px;
+  }
+
+  .page--narrow {
+    max-width: 860px;
+  }
+
+  .card {
+    padding: 32px;
+  }
+}
+</style>
