@@ -1,12 +1,15 @@
-import { createRouter, createWebHistory } from 'vue-router';
+﻿import { createRouter, createWebHistory } from 'vue-router';
 import TransactionFormPage from '@/pages/TransactionFormPage.vue';
 import TransactionsPage from '@/pages/TransactionsPage.vue';
 import SummaryPage from '@/pages/SummaryPage.vue';
-import BudgetPage from '@/pages/BudgetPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      redirect: '/transactions',
+    },
     {
       path: '/transactions',
       name: 'transactions',
@@ -16,11 +19,6 @@ const router = createRouter({
       path: '/summary',
       name: 'summary',
       component: SummaryPage,
-    },
-    {
-      path: '/budget',
-      name: 'budget',
-      component: BudgetPage,
     },
     {
       path: '/transactions/new',
