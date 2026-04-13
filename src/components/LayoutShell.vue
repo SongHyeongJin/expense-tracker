@@ -7,7 +7,8 @@ const route = useRoute();
 const navItems = [
   { label: '홈', to: '/summary' },
   { label: '거래내역', to: '/transactions' },
-  { label: '거래', to: '/transactions/new' },
+  { label: '거래등록', to: '/transactions/new' },
+  { label: '예산', to: '/budget' },
 ];
 
 const isActive = computed(() => (target) => {

@@ -1,164 +1,159 @@
 ﻿<template>
-  <LayoutShell>
-    <div class="transactions-page">
-      <header class="page-header">
-        <div class="title-group">
-          <span class="eyebrow">거래내역</span>
-          <h1>전체 거래 조회</h1>
-        </div>
+  <div class="transactions-page">
+    <header class="page-header">
+      <div class="title-group">
+        <span class="eyebrow">거래내역</span>
+        <h1>전체 거래 조회</h1>
+      </div>
 
-        <button type="button" class="reset-button" @click="resetFilters">
-          필터 초기화
-        </button>
-      </header>
+      <button type="button" class="reset-button" @click="resetFilters">
+        필터 초기화
+      </button>
+    </header>
 
-      <section class="panel filter-panel">
-        <div class="filter-grid">
-          <label class="filter-field">
-            <span>유형</span>
-            <select v-model="filters.type">
-              <option value="">전체</option>
-              <option value="INCOME">수입</option>
-              <option value="EXPENSE">지출</option>
-            </select>
-          </label>
+    <section class="panel filter-panel">
+      <div class="filter-grid">
+        <label class="filter-field">
+          <span>유형</span>
+          <select v-model="filters.type">
+            <option value="">전체</option>
+            <option value="INCOME">수입</option>
+            <option value="EXPENSE">지출</option>
+          </select>
+        </label>
 
-          <label class="filter-field">
-            <span>카테고리</span>
-            <select v-model="filters.category">
-              <option value="">전체</option>
-              <option
-                v-for="category in categories"
-                :key="category"
-                :value="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-          </label>
+        <label class="filter-field">
+          <span>카테고리</span>
+          <select v-model="filters.category">
+            <option value="">전체</option>
+            <option
+              v-for="category in categories"
+              :key="category"
+              :value="category"
+            >
+              {{ category }}
+            </option>
+          </select>
+        </label>
 
-          <label class="filter-field">
-            <span>기간</span>
-            <select v-model="datePreset" @change="applyDatePreset">
-              <option value="all">전체</option>
-              <option value="today">오늘</option>
-              <option value="month">이번 달</option>
-            </select>
-          </label>
+        <label class="filter-field">
+          <span>기간</span>
+          <select v-model="datePreset" @change="applyDatePreset">
+            <option value="all">전체</option>
+            <option value="today">오늘</option>
+            <option value="month">이번 달</option>
+          </select>
+        </label>
 
-          <label class="filter-field">
-            <span>시작일</span>
-            <input type="date" v-model="filters.startDate" />
-          </label>
+        <label class="filter-field">
+          <span>시작일</span>
+          <input type="date" v-model="filters.startDate" />
+        </label>
 
-          <label class="filter-field">
-            <span>종료일</span>
-            <input type="date" v-model="filters.endDate" />
-          </label>
+        <label class="filter-field">
+          <span>종료일</span>
+          <input type="date" v-model="filters.endDate" />
+        </label>
 
-          <label class="filter-field">
-            <span>정렬 기준</span>
-            <select v-model="sortBy">
-              <option value="date">날짜</option>
-              <option value="amount">금액</option>
-            </select>
-          </label>
+        <label class="filter-field">
+          <span>정렬 기준</span>
+          <select v-model="sortBy">
+            <option value="date">날짜</option>
+            <option value="amount">금액</option>
+          </select>
+        </label>
 
-          <label class="filter-field">
-            <span>정렬 방향</span>
-            <select v-model="sortOrder">
-              <option value="desc">내림차순</option>
-              <option value="asc">오름차순</option>
-            </select>
-          </label>
-        </div>
-      </section>
+        <label class="filter-field">
+          <span>정렬 방향</span>
+          <select v-model="sortOrder">
+            <option value="desc">내림차순</option>
+            <option value="asc">오름차순</option>
+          </select>
+        </label>
+      </div>
+    </section>
 
-      <section class="stats-grid">
-        <article class="panel stat-card">
-          <span class="stat-label">필터 수입</span>
-          <strong class="stat-value income"
-            >₩{{ formatCurrency(summary.totalIncome) }}</strong
-          >
+    <section class="stats-grid">
+      <article class="panel stat-card">
+        <span class="stat-label">필터 수입</span>
+        <strong class="stat-value income"
+          >₩{{ formatCurrency(summary.totalIncome) }}</strong
+        >
+      </article>
+
+      <article class="panel stat-card">
+        <span class="stat-label">필터 지출</span>
+        <strong class="stat-value expense"
+          >₩{{ formatCurrency(summary.totalExpense) }}</strong
+        >
+      </article>
+
+      <article class="panel stat-card">
+        <span class="stat-label">거래 건수</span>
+        <strong class="stat-value count">{{
+          filteredTransactions.length
+        }}</strong>
+        <span class="stat-unit">건</span>
+      </article>
+    </section>
+
+    <section class="panel category-panel">
+      <div class="panel-heading">
+        <h2>카테고리별 요약</h2>
+        <span class="panel-caption">현재 필터 기준</span>
+      </div>
+
+      <div v-if="categoryStats.length" class="category-grid">
+        <article
+          v-for="stat in categoryStats"
+          :key="`${stat.type}-${stat.name}`"
+          class="category-row"
+        >
+          <div class="category-left">
+            <span class="category-type">{{
+              stat.type === 'INCOME' ? '수입' : '지출'
+            }}</span>
+            <strong>{{ stat.name }}</strong>
+          </div>
+
+          <div class="category-right">
+            <span>{{ stat.count }}건</span>
+            <strong
+              :class="stat.type === 'INCOME' ? 'ratio-income' : 'ratio-expense'"
+            >
+              {{ stat.percentage }}%
+            </strong>
+          </div>
         </article>
+      </div>
 
-        <article class="panel stat-card">
-          <span class="stat-label">필터 지출</span>
-          <strong class="stat-value expense"
-            >₩{{ formatCurrency(summary.totalExpense) }}</strong
-          >
-        </article>
+      <div v-else class="empty-state">조건에 맞는 거래가 없습니다.</div>
+    </section>
 
-        <article class="panel stat-card">
-          <span class="stat-label">거래 건수</span>
-          <strong class="stat-value count">{{
-            filteredTransactions.length
-          }}</strong>
-          <span class="stat-unit">건</span>
-        </article>
-      </section>
+    <section class="panel list-panel">
+      <div class="panel-heading">
+        <h2>거래 목록</h2>
+        <span class="panel-caption"
+          >{{ filteredTransactions.length }}건 표시 중</span
+        >
+      </div>
 
-      <section class="panel category-panel">
-        <div class="panel-heading">
-          <h2>카테고리별 요약</h2>
-          <span class="panel-caption">현재 필터 기준</span>
-        </div>
+      <div v-if="filteredTransactions.length" class="transaction-list">
+        <TransactionListItem
+          v-for="item in filteredTransactions"
+          :key="item.id"
+          :transaction="item"
+          @delete="handleDeleteTransaction"
+        />
+      </div>
 
-        <div v-if="categoryStats.length" class="category-grid">
-          <article
-            v-for="stat in categoryStats"
-            :key="`${stat.type}-${stat.name}`"
-            class="category-row"
-          >
-            <div class="category-left">
-              <span class="category-type">{{
-                stat.type === 'INCOME' ? '수입' : '지출'
-              }}</span>
-              <strong>{{ stat.name }}</strong>
-            </div>
-
-            <div class="category-right">
-              <span>{{ stat.count }}건</span>
-              <strong
-                :class="
-                  stat.type === 'INCOME' ? 'ratio-income' : 'ratio-expense'
-                "
-              >
-                {{ stat.percentage }}%
-              </strong>
-            </div>
-          </article>
-        </div>
-
-        <div v-else class="empty-state">조건에 맞는 거래가 없습니다.</div>
-      </section>
-
-      <section class="panel list-panel">
-        <div class="panel-heading">
-          <h2>거래 목록</h2>
-          <span class="panel-caption"
-            >{{ filteredTransactions.length }}건 표시 중</span
-          >
-        </div>
-
-        <div v-if="filteredTransactions.length" class="transaction-list">
-          <TransactionListItem
-            v-for="item in filteredTransactions"
-            :key="item.id"
-            :transaction="item"
-            @delete="handleDeleteTransaction"
-          />
-        </div>
-
-        <div v-else class="empty-state">표시할 거래가 없습니다.</div>
-      </section>
-    </div>
-  </LayoutShell>
+      <div v-else class="empty-state">표시할 거래가 없습니다.</div>
+    </section>
+  </div>
 </template>
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue';
-import LayoutShell from '@/components/LayoutShell.vue';
 import TransactionListItem from '@/components/TransactionListItem.vue';
 import { useTransactionStore } from '@/stores/transactionStore';
 import { formatCurrency } from '@/utils/format';
